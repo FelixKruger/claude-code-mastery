@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code Mastery — The Complete Field Guide (April 2026)</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --surface: #12121a;
+  --surface2: #1a1a26;
+  --border: #2a2a3a;
+  --text: #e0dfe6;
+  --text-dim: #8888a0;
+  --text-bright: #ffffff;
+  --accent-think: #7c6cf0;
+  --accent-memory: #3ecf8e;
+  --accent-config: #f0a23c;
+  --accent-extend: #e05277;
+  --accent-hack: #38bdf8;
+  --accent-warn: #ef4444;
+  --accent-source: #6b7280;
+  --code-bg: #0f0f18;
+  --radius: 8px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,10,15,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 24px;
+  display: flex; align-items: center; gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+nav::-webkit-scrollbar { display: none; }
+nav .logo {
+  font-family: 'Fraunces', serif;
+  font-weight: 700; font-size: 18px;
+  color: var(--text-bright);
+  white-space: nowrap;
+  margin-right: 16px;
+  letter-spacing: -0.5px;
+}
+nav .logo span { color: var(--accent-think); }
+nav a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+nav a:hover { color: var(--text-bright); background: var(--surface2); }
+
+.container { max-width: 960px; margin: 0 auto; padding: 32px 24px 120px; }
+
+.hero {
+  padding: 64px 0 48px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-size: 42px; font-weight: 700;
+  color: var(--text-bright);
+  line-height: 1.15;
+  letter-spacing: -1px;
+  margin-bottom: 16px;
+}
+.hero h1 span { color: var(--accent-think); }
+.hero p { color: var(--text-dim); font-size: 16px; max-width: 640px; }
+.hero .meta {
+  margin-top: 20px;
+  display: flex; gap: 16px; flex-wrap: wrap;
+}
+.hero .meta .tag {
+  font-size: 11px; font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+
+section { margin-bottom: 48px; }
+.section-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--border);
+}
+.section-header .dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.section-header h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 24px; font-weight: 700;
+  color: var(--text-bright);
+  letter-spacing: -0.5px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.card:hover { border-color: #3a3a4f; }
+.card-header {
+  padding: 16px 20px;
+  display: flex; align-items: flex-start; justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+}
+.card-header h3 {
+  font-size: 15px; font-weight: 600;
+  color: var(--text-bright);
+  line-height: 1.4;
+}
+.card-header .subtitle {
+  font-size: 13px; color: var(--text-dim);
+  margin-top: 2px;
+}
+.card-header .toggle {
+  color: var(--text-dim);
+  font-size: 18px;
+  transition: transform 0.25s;
+  flex-shrink: 0;
+  margin-left: 12px;
+  margin-top: 2px;
+}
+.card.open .card-header .toggle { transform: rotate(45deg); }
+.card-body {
+  display: none;
+  padding: 0 20px 20px;
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.card.open .card-body { display: block; }
+.card-body p { margin-bottom: 12px; }
+.card-body strong { color: var(--text-bright); }
+
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  margin: 12px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: #c4c4d8;
+}
+code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: var(--accent-hack);
+}
+
+.tags { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
+.tag-sm {
+  font-size: 10px; font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 3px 8px;
+  border-radius: 3px;
+}
+.tag-think { background: rgba(124,108,240,0.15); color: var(--accent-think); }
+.tag-memory { background: rgba(62,207,142,0.15); color: var(--accent-memory); }
+.tag-config { background: rgba(240,162,60,0.15); color: var(--accent-config); }
+.tag-extend { background: rgba(224,82,119,0.15); color: var(--accent-extend); }
+.tag-hack { background: rgba(56,189,248,0.15); color: var(--accent-hack); }
+.tag-warn { background: rgba(239,68,68,0.15); color: var(--accent-warn); }
+
+.source {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; color: var(--accent-source);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--accent-source);
+  transition: color 0.15s;
+}
+.source:hover { color: var(--text); }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 13px;
+}
+th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-dim);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+td {
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(42,42,58,0.5);
+  vertical-align: top;
+}
+
+.callout {
+  border-left: 3px solid;
+  padding: 12px 16px;
+  border-radius: 0 6px 6px 0;
+  margin: 16px 0;
+  font-size: 13px;
+}
+.callout.think { border-color: var(--accent-think); background: rgba(124,108,240,0.06); }
+.callout.memory { border-color: var(--accent-memory); background: rgba(62,207,142,0.06); }
+.callout.warn { border-color: var(--accent-warn); background: rgba(239,68,68,0.06); }
+.callout.hack { border-color: var(--accent-hack); background: rgba(56,189,248,0.06); }
+.callout .callout-title { font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.callout.think .callout-title { color: var(--accent-think); }
+.callout.memory .callout-title { color: var(--accent-memory); }
+.callout.warn .callout-title { color: var(--accent-warn); }
+.callout.hack .callout-title { color: var(--accent-hack); }
+
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  margin: 12px 0;
+}
+.tool-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+.tool-card h4 {
+  font-size: 14px; font-weight: 700;
+  color: var(--text-bright);
+  margin-bottom: 4px;
+}
+.tool-card .tool-desc { font-size: 12.5px; color: var(--text-dim); margin-bottom: 8px; }
+.tool-card a {
+  font-size: 11px; color: var(--accent-hack);
+  text-decoration: none;
+}
+.tool-card a:hover { text-decoration: underline; }
+
+footer {
+  border-top: 1px solid var(--border);
+  padding-top: 32px;
+  margin-top: 48px;
+  color: var(--text-dim);
+  font-size: 13px;
+}
+footer a { color: var(--accent-think); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+@media (max-width: 640px) {
+  .hero h1 { font-size: 28px; }
+  .section-header h2 { font-size: 20px; }
+  .tool-grid { grid-template-columns: 1fr; }
+  nav { padding: 10px 16px; }
+  .container { padding: 20px 16px 80px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">CC<span>:</span>Mastery</div>
+  <a href="#thinking">Thinking</a>
+  <a href="#memory">Memory</a>
+  <a href="#config">Config</a>
+  <a href="#internals">Internals</a>
+  <a href="#omc">OMC</a>
+  <a href="#hacks">Hacks</a>
+  <a href="#extensions">Extensions</a>
+  <a href="#conversation">Chat Mode</a>
+  <a href="#future">Future</a>
+</nav>
+
+<div class="container">
+
+<!-- ════════════════════ HERO ════════════════════ -->
+<div class="hero">
+  <h1>Claude Code <span>Mastery</span></h1>
+  <p>The complete field guide to getting the most out of Claude Code with Opus 4.6+ — from thinking modes and memory architecture to extending it into a conversational thinking partner. Built from source leak analysis, official docs, and community knowledge.</p>
+  <div class="meta">
+    <span class="tag">April 2026</span>
+    <span class="tag">Opus 4.6 / 4.7</span>
+    <span class="tag">Claude Code Max</span>
+    <span class="tag">Open Source</span>
+  </div>
+</div>
+
+<!-- ════════════════════ THINKING ════════════════════ -->
+<section id="thinking">
+  <div class="section-header">
+    <div class="dot" style="background:var(--accent-think)"></div>
+    <h2>Thinking &amp; Reasoning</h2>
+  </div>
+
+  <div class="card open">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>The Three Ways to Control Thinking Depth</h3>
+        <div class="subtitle">Effort levels, trigger keywords, and env vars</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <p>Claude Code gives you three independent levers for controlling how deeply the model reasons. They stack and interact.</p>
+      <table>
+        <tr><th>Method</th><th>How</th><th>When to Use</th></tr>
+        <tr><td><strong>/effort</strong></td><td><code>/effort low</code> · <code>medium</code> · <code>high</code> · <code>max</code></td><td>Persistent per-session setting. Best for setting a baseline.</td></tr>
+        <tr><td><strong>Trigger words</strong></td><td>Type them in your prompt (see table below)</td><td>Quick per-prompt override without changing session settings.</td></tr>
+        <tr><td><strong>Env var</strong></td><td><code>MAX_THINKING_TOKENS</code> in settings.json</td><td>Always-on max budget. Model uses only what it needs.</td></tr>
+      </table>
+      <div class="callout think">
+        <div class="callout-title">Key insight from the source leak</div>
+        Trigger words are <em>client-side features</em> of Claude Code, not model-level. They pattern-match in the JS client and set specific <code>budget_tokens</code> values sent to the API.
+      </div>
+      <a class="source" href="https://simonwillison.net/2025/Apr/19/claude-code-best-practices/" target="_blank">↗ Simon Willison's deobfuscation</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>Trigger Word → Token Budget Map</h3>
+        <div class="subtitle">Confirmed from deobfuscated source code</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <table>
+        <tr><th>Trigger</th><th>Tokens</th><th>Tier</th></tr>
+        <tr><td><code>think</code></td><td>4,000</td><td>Light</td></tr>
+        <tr><td><code>think hard</code> · <code>megathink</code> · <code>think deeply</code> · <code>think more</code> · <code>think a lot</code> · <code>think about it</code></td><td>10,000</td><td>Medium</td></tr>
+        <tr><td><code>think harder</code> · <code>ultrathink</code> · <code>think very hard</code> · <code>think really hard</code> · <code>think super hard</code> · <code>think intensely</code> · <code>think longer</code></td><td>31,999</td><td>Maximum</td></tr>
+      </table>
+      <div class="callout warn">
+        <div class="callout-title">Opus 4.7 change</div>
+        Opus 4.7 (released April 20, 2026) <strong>removes fixed thinking budgets entirely</strong>. Only adaptive thinking works. These triggers may behave differently on 4.7. Check your model with <code>/model</code>.
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>Adaptive Thinking (Recommended Default)</h3>
+        <div class="subtitle">Let the model decide how much to think</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <p>Opus 4.6's default mode. The model dynamically decides when deeper reasoning helps. Control the ceiling with <code>/effort</code>:</p>
+      <table>
+        <tr><th>Level</th><th>Best For</th></tr>
+        <tr><td><code>low</code></td><td>Renaming, formatting, simple lookups</td></tr>
+        <tr><td><code>medium</code></td><td>Standard coding, most daily work</td></tr>
+        <tr><td><code>high</code> (default)</td><td>Architecture, debugging, complex reasoning</td></tr>
+        <tr><td><code>max</code></td><td>Deepest reasoning — system design, hard bugs, strategic thinking</td></tr>
+      </table>
+      <p><strong>Always-on max budget</strong> (recommended for Max subscribers):</p>
+<pre>{
+  "env": {
+    "MAX_THINKING_TOKENS": "31999"
+  }
+}</pre>
+      <p>Put this in <code>~/.claude/settings.json</code>. The model will only use tokens it needs — this just removes the ceiling.</p>
+      <a class="source" href="https://code.claude.com/docs/en/model-config" target="_blank">↗ Official: Model configuration</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>Prompt Framing That Triggers Deeper Reasoning</h3>
+        <div class="subtitle">Beyond keywords — structural cues matter</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <p>From the source leak: tasks framed as analysis or architecture engage deeper reasoning regardless of trigger words.</p>
+      <p><strong>Patterns that trigger deep thinking:</strong></p>
+      <p>"Think through the tradeoffs of…" · "Before making changes, analyze the structure and identify issues with…" · "What are three different approaches and their tradeoffs?" · "What am I not seeing here?"</p>
+      <p><strong>Patterns that get fast responses:</strong></p>
+      <p>"Rename X to Y" · "Add error handling. Use try/catch. Follow existing pattern." · Direct, operational commands with no ambiguity.</p>
+      <div class="callout hack">
+        <div class="callout-title">From Anthropic's internal A/B testing</div>
+        Explicit word counts outperform vague instructions. "Keep responses under 100 words" got ~1.2% more token reduction than "be concise." Be specific.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ MEMORY ════════════════════ -->
+<section id="memory">
+  <div class="section-header">
+    <div class="dot" style="background:var(--accent-memory)"></div>
+    <h2>Memory Architecture</h2>
+  </div>
+
+  <div class="card open">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>The Full Memory Hierarchy</h3>
+        <div class="subtitle">What loads when, and who writes it</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <table>
+        <tr><th>#</th><th>Source</th><th>Lifetime</th><th>Who Writes</th></tr>
+        <tr><td>1</td><td>System instructions</td><td>Built-in</td><td>Anthropic</td></tr>
+        <tr><td>2</td><td><code>~/.claude/CLAUDE.md</code> (global)</td><td>Permanent</td><td>You</td></tr>
+        <tr><td>3</td><td><code>./CLAUDE.md</code> (project)</td><td>Permanent</td><td>You / Team</td></tr>
+        <tr><td>4</td><td><code>./CLAUDE.local.md</code></td><td>Permanent (gitignored)</td><td>You</td></tr>
+        <tr><td>5</td><td>Auto memory (<code>MEMORY.md</code>)</td><td>Persistent</td><td>Claude</td></tr>
+        <tr><td>6</td><td>Conversation history</td><td>Session</td><td>Both</td></tr>
+        <tr><td>7</td><td>Compacted summaries</td><td>Session</td><td>Claude</td></tr>
+      </table>
+      <p>Higher numbers are overridden by lower numbers on conflict. All files are <strong>concatenated</strong>, not replaced.</p>
+      <a class="source" href="https://code.claude.com/docs/en/memory" target="_blank">↗ Official: Memory docs</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>Auto Memory: How Claude Takes Its Own Notes</h3>
+        <div class="subtitle">autoDream, MEMORY.md, topic files</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <p>Auto memory stores plain markdown files at <code>~/.claude/projects/&lt;project&gt;/memory/</code>. Claude writes these as it works.</p>
+      <p><strong>How it loads:</strong> First 200 lines (or 25KB) of <code>MEMORY.md</code> load at session start. Topic files (like <code>debugging.md</code>) load on demand.</p>
+      <div class="callout memory">
+        <div class="callout-title">From the source leak: autoDream</div>
+        Claude Code runs background memory consolidation (<code>autoDream</code>) after 24+ hours and 5+ sessions. It deduplicates, removes contradictions, and reorganizes memory using a forked subagent with limited tool access — preventing it from corrupting main context. Memory is treated as a <em>hint</em>, not truth. Claude verifies before using it.
+      </div>
+      <p><strong>The 3-layer index architecture</strong> (leaked):</p>
+      <p><strong>Layer 1 — Index</strong> (always loaded): ~150 chars per line, just pointers.<br>
+      <strong>Layer 2 — Topic files</strong> (on demand): actual knowledge.<br>
+      <strong>Layer 3 — Transcripts</strong> (never loaded): only searched via grep.</p>
+      <p><strong>Write discipline:</strong> Write to topic file first, then update index. Never dump content directly into the index. If a fact can be re-derived from the codebase, don't store it.</p>
+      <p><strong>Commands:</strong> <code>/memory</code> to browse and edit. Tell Claude "remember that X" and it saves to auto memory.</p>
+      <a class="source" href="https://read.engineerscodex.com/p/diving-into-claude-codes-source-code" target="_blank">↗ Engineer's Codex: Source leak deep dive</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>CLAUDE.md: What Works and What Doesn't</h3>
+        <div class="subtitle">Effective rules from the field</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <p><strong>Target:</strong> Under 200 lines per file. Longer files eat context and reduce adherence.</p>
+      <p><strong>Do:</strong> Build commands, test commands, project layout, "always do X" rules, naming conventions. Use <code>@path/to/file</code> to import external docs without bloating CLAUDE.md.</p>
+      <p><strong>Don't:</strong> General programming knowledge (Claude already knows), vague instructions ("be professional"), multi-step procedures (use skills instead).</p>
+      <p><strong>How to grow it organically:</strong> Run <code>/init</code> to generate a draft. Use Claude Code for a few sessions. Every time it does something wrong, add the correction. Within days you'll have a config that perfectly matches your workflow.</p>
+      <p><strong>Mid-session updates:</strong> Press <code>#</code> during any session to open an instruction prompt that updates CLAUDE.md. Or reference <code>@CLAUDE.md</code> in a prompt to force a re-read.</p>
+      <div class="callout hack">
+        <div class="callout-title">From the leak</div>
+        CLAUDE.md instructions are treated as "immutable system rules" — Claude Code follows them more strictly than user prompts. Project root CLAUDE.md survives compaction (re-read from disk). Nested subdirectory CLAUDE.md files do not auto-reload after <code>/compact</code>.
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>Rules: Modular Instructions with .claude/rules/</h3>
+        <div class="subtitle">Path-scoped, topic-based rule files</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <p>Instead of one huge CLAUDE.md, split into topic files in <code>.claude/rules/</code>:</p>
+<pre>.claude/
+├── CLAUDE.md
+└── rules/
+    ├── code-style.md
+    ├── testing.md
+    └── security.md</pre>
+      <p><strong>Path-scoped rules</strong> only load when Claude works on matching files:</p>
+<pre>---
+paths:
+  - "src/api/**/*.ts"
+---
+# API Development Rules
+- All endpoints must include input validation
+- Use the standard error response format</pre>
+      <p><strong>User-level rules</strong> at <code>~/.claude/rules/</code> apply globally across all projects.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ CONFIG ════════════════════ -->
+<section id="config">
+  <div class="section-header">
+    <div class="dot" style="background:var(--accent-config)"></div>
+    <h2>Configuration &amp; Models</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>Model Selection Quick Reference</h3>
+        <div class="subtitle">Aliases, switching, and opusplan</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <table>
+        <tr><th>Alias</th><th>Resolves To</th><th>Best For</th></tr>
+        <tr><td><code>opus</code></td><td>Opus 4.7 (API) / 4.6 (Bedrock)</td><td>Complex reasoning, architecture</td></tr>
+        <tr><td><code>sonnet</code></td><td>Sonnet 4.6</td><td>Daily coding, fast responses</td></tr>
+        <tr><td><code>haiku</code></td><td>Haiku 4.5</td><td>Simple tasks, quick answers</td></tr>
+        <tr><td><code>opusplan</code></td><td>Opus (plan) → Sonnet (execute)</td><td>Best of both: deep planning, fast execution</td></tr>
+        <tr><td><code>opus[1m]</code></td><td>Opus with 1M context</td><td>Very long sessions</td></tr>
+      </table>
+      <p><strong>Switch:</strong> <code>/model opus</code> in-session or <code>claude --model opus</code> at launch.</p>
+      <p><strong>Pin in settings:</strong> Add <code>"model": "opus"</code> to settings.json.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>Essential Settings &amp; Env Vars</h3>
+        <div class="subtitle">The settings.json and environment knobs</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <p>Settings file: <code>~/.claude/settings.json</code></p>
+<pre>{
+  "model": "opus",
+  "env": {
+    "MAX_THINKING_TOKENS": "31999",
+    "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "32000"
+  }
+}</pre>
+      <p><strong>Other useful env vars:</strong></p>
+      <table>
+        <tr><td><code>CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING=1</code></td><td>Revert to fixed budget (Opus 4.6 only)</td></tr>
+        <tr><td><code>CLAUDE_CODE_DISABLE_AUTO_MEMORY=1</code></td><td>Turn off auto memory</td></tr>
+        <tr><td><code>ANTHROPIC_MODEL</code></td><td>Override model at env level</td></tr>
+        <tr><td><code>CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1</code></td><td>Load CLAUDE.md from <code>--add-dir</code> dirs</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>Key Slash Commands</h3>
+        <div class="subtitle">The ones worth memorizing</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <table>
+        <tr><th>Command</th><th>What It Does</th></tr>
+        <tr><td><code>/model</code></td><td>Switch model mid-session</td></tr>
+        <tr><td><code>/effort</code></td><td>Set thinking depth (low/medium/high/max)</td></tr>
+        <tr><td><code>/compact</code></td><td>Compress context. Add focus: <code>/compact Focus on auth</code></td></tr>
+        <tr><td><code>/clear</code></td><td>Wipe conversation, fresh start</td></tr>
+        <tr><td><code>/memory</code></td><td>View/edit all loaded memory files</td></tr>
+        <tr><td><code>/init</code></td><td>Generate CLAUDE.md from your codebase</td></tr>
+        <tr><td><code>/cost</code></td><td>Show token usage for the session</td></tr>
+        <tr><td><code>#</code></td><td>Quick-add instruction to CLAUDE.md</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ INTERNALS ════════════════════ -->
+<section id="internals">
+  <div class="section-header">
+    <div class="dot" style="background:var(--accent-warn)"></div>
+    <h2>Under the Hood (Source Leak Insights)</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>How the System Prompt Actually Works</h3>
+        <div class="subtitle">Dynamic assembly, cache boundaries, and what this means for you</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <p>Claude Code doesn't have one system prompt. It <strong>dynamically assembles</strong> dozens of prompt fragments based on your session context.</p>
+      <p><strong>Cache boundary split:</strong> The prompt splits at <code>SYSTEM_PROMPT_DYNAMIC_BOUNDARY</code>. Everything before (tool definitions, core instructions) is <strong>cached globally across all users</strong>. Everything after (your CLAUDE.md, git status, date) is session-specific. This is how Anthropic keeps API costs down.</p>
+      <p><strong>What this means:</strong> Your CLAUDE.md doesn't increase Anthropic's cost, but it competes for attention with the built-in coding instructions. Strong, specific instructions in your CLAUDE.md can override the default coding bias.</p>
+      <p><strong>Escape hatch:</strong> <code>--append-system-prompt "your text"</code> injects directly into the system prompt — above CLAUDE.md level, giving it the highest priority possible.</p>
+      <a class="source" href="https://www.sabrina.dev/p/claude-code-source-leak-analysis" target="_blank">↗ Sabrina Ramonov: Comprehensive leak analysis</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>Compaction: What Survives Long Conversations</h3>
+        <div class="subtitle">The hidden summarizer and its security implications</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <p>When context gets too long, Claude Code forks a <strong>second model instance</strong> to summarize. You never see this happen.</p>
+      <p><strong>What survives:</strong> Project-root CLAUDE.md is re-read from disk after compaction. Nested CLAUDE.md files and in-conversation instructions may not.</p>
+      <p><strong>What doesn't:</strong> Conversation-only instructions, detailed context from early in the session, nested subdirectory CLAUDE.md files (until Claude reads files in that dir again).</p>
+      <p><strong>Tip:</strong> Anything important enough to survive long sessions should be in your root CLAUDE.md, not just said in conversation.</p>
+      <div class="callout warn">
+        <div class="callout-title">Security note from the leak</div>
+        The compaction summarizer treats ALL content equally — no distinction between your instructions and instructions embedded in files Claude read. If a malicious file injects instructions, they can survive compaction. Keep this in mind when working with untrusted repos.
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>Other Leak Findings Worth Knowing</h3>
+        <div class="subtitle">Anti-distillation, frustration detection, parallel tools, file editing</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <p><strong>Frustration detection:</strong> A regex scans your input for swear words and frustration signals. When triggered, Claude adjusts behavior (more careful, different approach).</p>
+      <p><strong>Parallel tool calls:</strong> Claude Code is instructed to batch independent operations. Frame tasks as parallel: "Read file A and B at the same time and compare" instead of "Read A, then read B."</p>
+      <p><strong>Anti-distillation:</strong> Fake tool definitions are injected to poison training data if competitors try to distill Claude Code's behavior. Disable with <code>CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS</code>.</p>
+      <p><strong>Bash is the primary power tool:</strong> Prefer asking for grep/ripgrep/sed over individual file reads for multi-file operations. Claude Code is explicitly instructed to prefer bash for multi-step file operations.</p>
+      <p><strong>File editing uses string replacement, not full rewrites.</strong> If edits fail, tell Claude to re-read the file first to get exact current content.</p>
+      <p><strong>250K wasted API calls/day:</strong> Auto-compaction had a bug causing massive retry loops. Fixed with a 3-failure circuit breaker. If compaction seems stuck, restart your session.</p>
+      <a class="source" href="https://alex000kim.com/posts/2026-03-31-claude-code-source-leak/" target="_blank">↗ Alex Kim: Full leak breakdown</a> ·
+      <a class="source" href="https://www.mindstudio.ai/blog/claude-code-source-code-leak-8-hidden-features" target="_blank">↗ MindStudio: 8 practical features</a> ·
+      <a class="source" href="https://venturebeat.com/technology/claude-codes-source-code-appears-to-have-leaked-heres-what-we-know" target="_blank">↗ VentureBeat coverage</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ OMC ════════════════════ -->
+<section id="omc">
+  <div class="section-header">
+    <div class="dot" style="background:var(--accent-hack)"></div>
+    <h2>oh-my-claudecode (OMC)</h2>
+  </div>
+
+  <div class="card open">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>What It Is &amp; How to Install</h3>
+        <div class="subtitle">Multi-agent orchestration as a plugin</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <p>OMC is a plugin that turns Claude Code into a multi-agent orchestration system. 32 specialized agents, 40+ skills, 5 execution modes. Zero learning curve — describe what you want in natural language.</p>
+      <p><strong>Install (inside a Claude Code session):</strong></p>
+<pre>/plugin marketplace add https://github.com/Yeachan-Heo/oh-my-claudecode
+/oh-my-claudecode:omc-setup</pre>
+      <p>That's it. Everything else is automatic.</p>
+      <p><strong>Update:</strong></p>
+<pre>/plugin install oh-my-claudecode
+/oh-my-claudecode:omc-setup</pre>
+      <a class="source" href="https://github.com/Yeachan-Heo/oh-my-claudecode" target="_blank">↗ GitHub: oh-my-claudecode</a> ·
+      <a class="source" href="https://ohmyclaudecode.com/" target="_blank">↗ Official site</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>Execution Modes Cheat Sheet</h3>
+        <div class="subtitle">Which mode for which job</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <table>
+        <tr><th>Mode</th><th>What It Does</th><th>When to Use</th></tr>
+        <tr><td><strong>Autopilot</strong></td><td>Single-threaded autonomous execution</td><td>Simple features, single-file edits, prototypes</td></tr>
+        <tr><td><strong>Ultrapilot</strong></td><td>5 concurrent workers, 3-5x speedup</td><td>Large refactors (20+ files), migrations, test generation</td></tr>
+        <tr><td><strong>Team</strong></td><td>Staged pipeline: plan → PRD → execute → verify → fix</td><td>Complex multi-component builds needing coordination</td></tr>
+        <tr><td><strong>Pipeline</strong></td><td>Sequential chain of specialized steps</td><td>Multi-stage workflows with dependencies</td></tr>
+        <tr><td><strong>Ecomode</strong></td><td>Token-efficient execution</td><td>Budget-conscious work, simple refactoring</td></tr>
+      </table>
+      <p><strong>Usage:</strong></p>
+<pre># Inside a Claude Code session:
+/autopilot "build a REST API for managing tasks"
+
+# Or natural language:
+autopilot: build a REST API for managing tasks</pre>
+      <div class="callout hack">
+        <div class="callout-title">Note: v4.1.7+ change</div>
+        The legacy <code>swarm</code> keyword has been removed. Use <code>/team</code> for coordinated multi-agent work instead.
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>Key OMC Skills</h3>
+        <div class="subtitle">The most useful ones to remember</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <table>
+        <tr><th>Skill</th><th>What It Does</th></tr>
+        <tr><td><code>/deep-interview</code></td><td>Socratic questioning to clarify vague ideas before execution. Exposes hidden assumptions.</td></tr>
+        <tr><td><code>/deepsearch</code></td><td>Deep research on a topic before implementation</td></tr>
+        <tr><td><code>/plan</code></td><td>Strategic planning workflow before diving into code</td></tr>
+        <tr><td><code>/tdd</code></td><td>Test-driven development workflow</td></tr>
+        <tr><td><code>/code-review</code></td><td>Thorough code review with specialized agents</td></tr>
+        <tr><td><code>/security-review</code></td><td>Security-focused audit</td></tr>
+        <tr><td><code>/hud</code></td><td>Show status dashboard</td></tr>
+        <tr><td><code>/doctor</code></td><td>Diagnose OMC setup issues</td></tr>
+        <tr><td><code>/note</code></td><td>Persist a learning note (wisdom capture)</td></tr>
+        <tr><td><code>/ultraqa</code></td><td>Comprehensive quality assurance pass</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ HACKS ════════════════════ -->
+<section id="hacks">
+  <div class="section-header">
+    <div class="dot" style="background:var(--accent-hack)"></div>
+    <h2>Power User Hacks &amp; Techniques</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>Karpathy's LLM Wiki Pattern</h3>
+        <div class="subtitle">Persistent, compounding knowledge bases</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <p>Andrej Karpathy's "LLM Wiki" concept: instead of RAG (re-deriving knowledge every query), have the LLM <strong>incrementally build and maintain a persistent wiki</strong>. The knowledge compounds — cross-references, contradictions, and synthesis are built once and kept current.</p>
+      <p><strong>Three layers:</strong></p>
+      <p><strong>Raw sources</strong> — immutable documents, articles, papers. The LLM reads but never modifies them.</p>
+      <p><strong>The wiki</strong> — LLM-generated markdown files. Summaries, entity pages, concept pages, comparisons. The LLM owns this layer entirely.</p>
+      <p><strong>The schema</strong> — a CLAUDE.md or AGENTS.md that tells the LLM how to structure the wiki, what conventions to follow, and what workflows to use for ingestion, querying, and maintenance.</p>
+      <p><strong>How to apply with Claude Code:</strong> Point Claude Code at an Obsidian vault. Use CLAUDE.md to define the wiki schema. Drop source files in a <code>/sources</code> directory. Tell Claude to ingest them into the wiki. Knowledge compounds across sessions.</p>
+      <a class="source" href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f" target="_blank">↗ Karpathy: LLM Wiki gist</a> ·
+      <a class="source" href="https://github.com/karpathy/autoresearch" target="_blank">↗ autoresearch</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>Token Saving Strategies</h3>
+        <div class="subtitle">Stop burning tokens unnecessarily</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <p><strong>1. Don't ultrathink everything.</strong> Use it selectively. Set the env var for the budget ceiling, but only use trigger words when you genuinely need deep reasoning.</p>
+      <p><strong>2. MCP servers eat tokens even when idle.</strong> Having Supabase + GitHub + Chrome DevTools MCPs connected (even unused) consumes ~75k tokens. Remove what you're not actively using.</p>
+      <p><strong>3. Keep CLAUDE.md lean.</strong> Every token in it loads on every turn. Target under 200 lines.</p>
+      <p><strong>4. Use subagents.</strong> Subagent tokens are independent — they don't consume main session tokens.</p>
+      <p><strong>5. Use <code>/compact</code> proactively.</strong> Add focus: <code>/compact Focus on the auth implementation</code> to guide what gets kept.</p>
+      <p><strong>6. Resume sessions.</strong> <code>claude --resume</code> or <code>claude --continue</code> instead of starting fresh and re-explaining context.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>Claude Code Beyond Coding</h3>
+        <div class="subtitle">Using it as a general-purpose agent</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <p><strong>Claude Code is not just for coding.</strong> It's a terminal-based agent with file system access. Think of it as a general-purpose assistant that happens to live in your terminal.</p>
+      <p><strong>Use cases beyond code:</strong> Research and analysis, document drafting, project planning, data processing, knowledge base management, strategic thinking.</p>
+      <p><strong>Plan mode:</strong> Use <code>/model opusplan</code> to get Opus for planning/thinking and Sonnet for execution. Deep reasoning without Opus prices on simple tasks.</p>
+      <p><strong>Frame as strategy, not code:</strong> "I need to design an architecture for X. Think through the tradeoffs. Don't write code yet."</p>
+      <p><strong>Use Obsidian as your IDE:</strong> Per Karpathy's pattern — Obsidian open on one side, Claude Code on the other. Claude writes markdown, you browse results in real time.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>Useful Shell Aliases</h3>
+        <div class="subtitle">Speed up your daily workflow</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+<pre># Full power Opus
+alias cc='claude --model opus'
+
+# Quick Sonnet for simple tasks
+alias ccs='claude --model sonnet'
+
+# Resume last session
+alias ccr='claude --resume'
+
+# Continue (keep context)
+alias ccc='claude --continue'
+
+# Conversational mode (see Chat Mode section)
+alias cc-chat='cd ~/claude-chat && claude --model opus \
+  --append-system-prompt "You are a thinking partner. \
+  Never default to coding. Think deeply. Be direct."'
+
+# Deep thinking mode
+alias cc-think='claude --model opus'</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ EXTENSIONS ════════════════════ -->
+<section id="extensions">
+  <div class="section-header">
+    <div class="dot" style="background:var(--accent-extend)"></div>
+    <h2>Memory Extensions &amp; Research Tools</h2>
+  </div>
+
+  <div class="card open">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>Tools to Supercharge Claude Code's Memory</h3>
+        <div class="subtitle">Knowledge graphs, semantic search, and persistent state</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <div class="tool-grid">
+        <div class="tool-card">
+          <h4>Graphiti / Zep</h4>
+          <div class="tool-desc">Temporal knowledge graph engine. Unlike static KGs, tracks how facts change over time with bi-temporal timestamps. MCP server for Claude Desktop/Code. State of the art in agent memory benchmarks (94.8% DMR).</div>
+          <a href="https://github.com/getzep/graphiti" target="_blank">↗ GitHub</a> · <a href="https://www.getzep.com/product/knowledge-graph-mcp/" target="_blank">↗ MCP server</a>
+        </div>
+        <div class="tool-card">
+          <h4>MemPalace</h4>
+          <div class="tool-desc">Memory palace architecture for Claude. ChromaDB + SQLite, 19 MCP tools. Organizes memories into wings → halls → rooms → closets → drawers. 96.6% LongMemEval recall (raw mode).</div>
+          <a href="https://github.com/mempalace/mempalace" target="_blank">↗ GitHub</a>
+        </div>
+        <div class="tool-card">
+          <h4>MCP Memory Service</h4>
+          <div class="tool-desc">Turn-level + session-level memory with Cloudflare sync, REST API, web dashboard, OAuth 2.1, auto consolidation with decay and compression. 13+ compatible AI tools.</div>
+          <a href="https://github.com/doobidoo/mcp-memory-service" target="_blank">↗ GitHub</a>
+        </div>
+        <div class="tool-card">
+          <h4>Obsidian + Graphify</h4>
+          <div class="tool-desc">Turns codebases into queryable knowledge graphs using tree-sitter AST. Zero API tokens in default mode. Claude Code queries the graph instead of re-reading files. Up to 71.5x fewer tokens per session.</div>
+          <a href="https://github.com/lucasrosati/claude-code-memory-setup" target="_blank">↗ GitHub</a>
+        </div>
+        <div class="tool-card">
+          <h4>Karpathy's autoresearch</h4>
+          <div class="tool-desc">Automated research workflow — drop sources, get structured wiki. The "LLM Wiki" pattern implemented as a tool. Works with Claude Code + Obsidian.</div>
+          <a href="https://github.com/karpathy/autoresearch" target="_blank">↗ GitHub</a> · <a href="https://github.com/yibie/awesome-autoresearch" target="_blank">↗ Awesome list</a>
+        </div>
+        <div class="tool-card">
+          <h4>MCP Knowledge Graph</h4>
+          <div class="tool-desc">Local-first persistent memory via knowledge graph. Named databases (work, personal, health). Entities, relations, and observations. Fork optimized for local development.</div>
+          <a href="https://github.com/shaneholloman/mcp-knowledge-graph" target="_blank">↗ GitHub</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>How to Choose a Memory Extension</h3>
+        <div class="subtitle">Decision framework</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <table>
+        <tr><th>If You Need…</th><th>Use</th></tr>
+        <tr><td>Simple persistent facts across sessions</td><td>Built-in auto memory (MEMORY.md) — already there, zero setup</td></tr>
+        <tr><td>Temporal awareness ("what did I decide in March?")</td><td>Graphiti/Zep — bi-temporal tracking</td></tr>
+        <tr><td>Rich relationship mapping</td><td>MemPalace or MCP Knowledge Graph</td></tr>
+        <tr><td>Cross-device sync</td><td>MCP Memory Service (Cloudflare sync)</td></tr>
+        <tr><td>Codebase understanding without re-reading</td><td>Graphify (tree-sitter AST, 0 API tokens)</td></tr>
+        <tr><td>Compounding research wiki</td><td>Karpathy's LLM Wiki pattern + autoresearch</td></tr>
+      </table>
+      <div class="callout memory">
+        <div class="callout-title">Start simple</div>
+        Don't layer 4 memory systems on day one. Start with built-in auto memory + a good CLAUDE.md. Add extensions only when you hit a real limitation. Research from ETH Zürich found that LLM-generated context files can actually hurt performance while increasing cost. Restraint first, add complexity only when justified.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ CONVERSATION MODE ════════════════════ -->
+<section id="conversation">
+  <div class="section-header">
+    <div class="dot" style="background:var(--accent-think)"></div>
+    <h2>Chat Mode: Claude Code as a Thinking Partner</h2>
+  </div>
+
+  <div class="card open">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>Using Claude Code for Conversation, Not Just Code</h3>
+        <div class="subtitle">The full setup for conversational Opus with controlled memory</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <p><strong>The concept:</strong> Claude Code is fundamentally a terminal-based Claude interface with file system access and configurable persistent memory. Strip the coding context, give it conversational context, and you have Opus with extended thinking, memory you own as markdown, and no black-box synthesis layer.</p>
+
+      <p><strong>Why do this instead of just using Claude Chat?</strong></p>
+      <p>You control the memory layer entirely (plain markdown files you can edit, version, and structure). You get the same Opus extended thinking. You can import context files selectively. Auto memory consolidation (autoDream) is more sophisticated than Chat's memory synthesis. You can have different memory for different "modes" — work vs. research vs. personal.</p>
+
+      <p><strong>1. Create a conversation directory:</strong></p>
+<pre>mkdir -p ~/claude-chat/{context,memory}
+cd ~/claude-chat</pre>
+
+      <p><strong>2. Write a conversation-mode CLAUDE.md:</strong></p>
+<pre># Conversation Mode
+
+You are a conversational thinking partner, NOT a coding assistant.
+Do NOT default to writing code, creating files, or implementing
+anything unless I explicitly say "implement this" or "write code."
+
+## Behavior
+- Think deeply about topics. Reason through problems.
+- Challenge assumptions. Flag flaws in reasoning.
+- Be direct, dense, no filler. Lead with conclusions.
+- When I say "think about X", reason through it — don't reach for tools.
+- Keep responses under 200 words unless the topic demands depth.
+
+## Memory
+- Write session summaries to ./memory/ after substantive conversations
+- Read ./memory/MEMORY.md at session start for continuity
+- Update memory proactively when learning something important
+
+## Context
+@./context/current-topics.md
+@./context/background.md</pre>
+
+      <p><strong>3. Create the shell alias:</strong></p>
+<pre>alias cc-chat='cd ~/claude-chat && claude --model opus \
+  --append-system-prompt "You are a strategic thinking partner. \
+  Think deeply. Be direct. Challenge reasoning. Never code unless asked."'</pre>
+
+      <p><strong>4. Populate context files</strong> with whatever persistent context you want loaded — current projects, background info, topics of interest.</p>
+
+      <p><strong>Why this works:</strong> Project CLAUDE.md stacks on top of global and overrides the coding bias. <code>--append-system-prompt</code> injects at system prompt level for highest priority. Auto memory writes to your conversation directory. You own every file.</p>
+
+      <div class="callout think">
+        <div class="callout-title">The key advantage</div>
+        Your global <code>~/.claude/CLAUDE.md</code> stays coding-focused for actual work. When you <code>cd</code> into the conversation directory and launch, the project CLAUDE.md takes over and you get conversational Opus with its own independent memory layer.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ FUTURE ════════════════════ -->
+<section id="future">
+  <div class="section-header">
+    <div class="dot" style="background:var(--accent-extend)"></div>
+    <h2>What's Coming: KAIROS &amp; Beyond</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>KAIROS: Anthropic's Unreleased Always-On Agent</h3>
+        <div class="subtitle">From the source leak — the future of Claude Code</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <p>Hidden behind feature flags in the leaked source: a fully built autonomous daemon mode. Claude Code running 24/7, unattended.</p>
+      <p><strong>Capabilities (gated, not public yet):</strong></p>
+      <p>Push notifications to phone/desktop · GitHub webhook subscriptions · 5-minute cron cycles · <code>/dream</code> command for background memory consolidation (autoDream) · Append-only daily logs (can't erase its own history) · Persistent across sessions — close laptop Friday, open Monday, KAIROS has been working.</p>
+      <p><strong>Architectural insight:</strong> KAIROS separates <em>initiative</em> from <em>execution</em>. Regular Claude Code is reactive (only acts when you message). KAIROS introduces a proactive loop where the agent decides what's worth doing on its own.</p>
+      <p><strong>Also found:</strong> ULTRAPLAN offloads planning to a remote Opus session for up to 30 minutes. TungstenTool gives internal Anthropic employees direct keystroke and screen-capture control (gated, not in public builds).</p>
+      <a class="source" href="https://read.engineerscodex.com/p/diving-into-claude-codes-source-code" target="_blank">↗ Engineer's Codex: KAIROS deep dive</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div>
+        <h3>Where This All Goes</h3>
+        <div class="subtitle">Combining these patterns into something larger</div>
+      </div>
+      <span class="toggle">+</span>
+    </div>
+    <div class="card-body">
+      <p>The patterns in this guide — persistent memory, structured wikis, multi-agent orchestration, background consolidation — are converging toward a larger vision: <strong>AI agents that maintain compounding knowledge and act autonomously</strong>.</p>
+      <p><strong>The stack that's emerging:</strong></p>
+      <p><strong>Research layer:</strong> Automated research (autoresearch pattern) feeding structured findings into a persistent wiki.</p>
+      <p><strong>Memory layer:</strong> Temporal knowledge graphs (Graphiti) tracking how knowledge evolves, with auto-consolidation (autoDream/KAIROS) maintaining the graph.</p>
+      <p><strong>Orchestration layer:</strong> Multi-agent systems (OMC, KAIROS) distributing work across specialized agents, running in parallel or autonomously.</p>
+      <p><strong>Interface layer:</strong> Claude Code as the terminal interface, with CLAUDE.md as the control surface and context files as the knowledge feed.</p>
+      <p>Whether you build this yourself or wait for Anthropic to ship KAIROS, understanding these patterns puts you ahead of what's coming.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════ FOOTER ════════════════════ -->
+<footer>
+  <p><strong>Sources &amp; Deep Dives</strong></p>
+  <p style="margin-top:8px;">
+    <a href="https://code.claude.com/docs/en/memory">Official: Memory docs</a> ·
+    <a href="https://code.claude.com/docs/en/model-config">Official: Model config</a> ·
+    <a href="https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking">Official: Adaptive thinking</a> ·
+    <a href="https://anthropic.com/engineering/claude-code-best-practices">Anthropic: Best practices</a> ·
+    <a href="https://alex000kim.com/posts/2026-03-31-claude-code-source-leak/">Alex Kim: Leak analysis</a> ·
+    <a href="https://read.engineerscodex.com/p/diving-into-claude-codes-source-code">Engineer's Codex: Deep dive</a> ·
+    <a href="https://www.sabrina.dev/p/claude-code-source-leak-analysis">Sabrina Ramonov: Full analysis</a> ·
+    <a href="https://www.mindstudio.ai/blog/claude-code-source-code-leak-8-hidden-features">MindStudio: 8 features</a> ·
+    <a href="https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f">Karpathy: LLM Wiki</a> ·
+    <a href="https://github.com/Yeachan-Heo/oh-my-claudecode">oh-my-claudecode</a> ·
+    <a href="https://github.com/getzep/graphiti">Graphiti</a> ·
+    <a href="https://github.com/mempalace/mempalace">MemPalace</a>
+  </p>
+  <p style="margin-top:16px; color: var(--text-dim); font-size: 12px;">
+    Last updated: April 21, 2026. Compiled by <a href="https://github.com/FelixKruger">FelixKruger</a>. Share freely.
+  </p>
+</footer>
+
+</div>
+
+<script>
+function toggleCard(header) {
+  const card = header.closest('.card');
+  card.classList.toggle('open');
+}
+
+if (window.location.hash) {
+  const target = document.querySelector(window.location.hash);
+  if (target) {
+    const firstCard = target.querySelector('.card');
+    if (firstCard) firstCard.classList.add('open');
+  }
+}
+</script>
+</body>
+</html>
