@@ -290,6 +290,71 @@ footer a:hover { text-decoration: underline; }
   nav { padding: 10px 16px; }
   .container { padding: 20px 16px 80px; }
 }
+
+details {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin: 10px 0;
+  font-size: 13px;
+}
+details summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-bright);
+  user-select: none;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+details summary::-webkit-details-marker { display: none; }
+details summary::before {
+  content: "▸";
+  color: var(--accent-hack);
+  font-size: 10px;
+  transition: transform 0.15s;
+}
+details[open] summary::before { transform: rotate(90deg); }
+details > *:not(summary) { margin-top: 10px; }
+details p { margin-bottom: 8px; }
+
+.timeline { list-style: none; counter-reset: step; padding: 0; margin: 12px 0; }
+.timeline li {
+  counter-increment: step;
+  position: relative;
+  padding: 10px 14px 10px 44px;
+  margin-bottom: 8px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.timeline li::before {
+  content: counter(step);
+  position: absolute;
+  left: 12px;
+  top: 10px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--accent-memory);
+  color: var(--bg);
+  font-weight: 700;
+  font-size: 11px;
+  display: flex; align-items: center; justify-content: center;
+}
+.timeline li strong { color: var(--text-bright); }
+
+.plain-list { list-style: none; padding: 0; margin: 12px 0; }
+.plain-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(42,42,58,0.5);
+  font-size: 13.5px;
+}
+.plain-list li:last-child { border-bottom: none; }
+.plain-list li strong { color: var(--text-bright); }
 </style>
 </head>
 <body>
@@ -434,24 +499,111 @@ footer a:hover { text-decoration: underline; }
   <div class="card open">
     <div class="card-header" onclick="toggleCard(this)">
       <div>
-        <h3>The Full Memory Hierarchy</h3>
-        <div class="subtitle">What loads when, and who writes it</div>
+        <h3>How Claude Code Remembers Things</h3>
+        <div class="subtitle">The simple version, then the details</div>
       </div>
       <span class="toggle">+</span>
     </div>
     <div class="card-body">
+      <p>Think of Claude Code like a freelance developer joining your team for a session. Before work starts, they read a stack of <strong>instruction sheets</strong> — from the company that built them, from you personally, and from this specific project — so they know how to work your way.</p>
+
+      <p style="margin-top:18px;"><strong>What Claude reads before starting:</strong></p>
+      <ul class="plain-list">
+        <li><strong>Company rules</strong> — Built-in instructions from Anthropic. How Claude behaves by default.</li>
+        <li><strong>Admin policy</strong> — A lock-down file from your IT admin. Enterprise only; rare for individuals.</li>
+        <li><strong>Your personal preferences</strong> — Things you want every time you use Claude Code (coding style, tools, tone).</li>
+        <li><strong>This project's rules</strong> — Instructions that live in the codebase. The whole team sees these.</li>
+        <li><strong>Your private notes for this project</strong> — Same project, but only on your machine. Not shared with teammates.</li>
+        <li><strong>Subfolder-specific rules</strong> — Rules that only apply inside one folder of the project. Loaded only when Claude works there.</li>
+        <li><strong>Claude's own notebook</strong> — Notes Claude took about this project in earlier sessions. Automatic.</li>
+      </ul>
+      <p style="font-size:13px; color:var(--text-dim);">While working, Claude also remembers the <em>current conversation</em>. When the session ends, that conversation memory is gone. The instruction sheets above stay on disk for next time.</p>
+
+      <p style="margin-top:22px;"><strong>Where each thing actually lives:</strong></p>
       <table>
-        <tr><th>#</th><th>Source</th><th>Lifetime</th><th>Who Writes</th></tr>
-        <tr><td>1</td><td>System instructions</td><td>Built-in</td><td>Anthropic</td></tr>
-        <tr><td>2</td><td><code>~/.claude/CLAUDE.md</code> (global)</td><td>Permanent</td><td>You</td></tr>
-        <tr><td>3</td><td><code>./CLAUDE.md</code> (project)</td><td>Permanent</td><td>You / Team</td></tr>
-        <tr><td>4</td><td><code>./CLAUDE.local.md</code></td><td>Permanent (gitignored)</td><td>You</td></tr>
-        <tr><td>5</td><td>Auto memory (<code>MEMORY.md</code>)</td><td>Persistent</td><td>Claude</td></tr>
-        <tr><td>6</td><td>Conversation history</td><td>Session</td><td>Both</td></tr>
-        <tr><td>7</td><td>Compacted summaries</td><td>Session</td><td>Claude</td></tr>
+        <tr><th>What</th><th>Where it lives</th><th>Who sees it</th></tr>
+        <tr><td>Admin policy</td><td>OS system path</td><td>Everyone on this machine</td></tr>
+        <tr><td>Your preferences</td><td><code>~/.claude/CLAUDE.md</code></td><td>Just you, every project</td></tr>
+        <tr><td>Project rules</td><td><code>./CLAUDE.md</code> (in the repo)</td><td>Whole team</td></tr>
+        <tr><td>Your private project notes</td><td><code>./CLAUDE.local.md</code> (gitignored)</td><td>Just you, just this project</td></tr>
+        <tr><td>Subfolder rules</td><td><code>&lt;subfolder&gt;/CLAUDE.md</code></td><td>Team, when Claude enters that folder</td></tr>
+        <tr><td>Claude's notebook</td><td><code>~/.claude/projects/&lt;repo&gt;/memory/MEMORY.md</code></td><td>Just you, this machine</td></tr>
       </table>
-      <p>Higher numbers are overridden by lower numbers on conflict. All files are <strong>concatenated</strong>, not replaced.</p>
-      <a class="source" href="https://code.claude.com/docs/en/memory" target="_blank">↗ Official: Memory docs</a>
+
+      <p style="margin-top:22px;"><strong>When these actually get read:</strong></p>
+      <ol class="timeline">
+        <li><strong>Session starts.</strong> Claude reads every instruction sheet on disk, plus its own notebook, and stitches them together into one long briefing.</li>
+        <li><strong>Claude enters a subfolder.</strong> That folder's rules load <em>then</em> — not before. First time Claude touches a file in there.</li>
+        <li><strong>Conversation gets long (<code>/compact</code> runs).</strong> Earlier messages get summarized to save room. Your project's root <code>CLAUDE.md</code> is re-read from disk so your top-level rules survive. Subfolder rules wait until Claude touches that folder again.</li>
+        <li><strong>Session ends.</strong> The conversation is gone. Files on disk stay. Claude's notebook may have been updated for next time.</li>
+      </ol>
+
+      <div class="callout warn">
+        <div class="callout-title">The single most important rule</div>
+        <strong>Nothing overrides anything. Everything concatenates.</strong> All the instruction sheets get stacked together and handed to Claude at once. If two sheets contradict, Claude <em>may follow either one</em> — the official docs literally say it "may pick one arbitrarily." Sheets loaded later (like your project rules, which load after your global preferences) tend to win on conflicts — but don't rely on this. If two rules contradict, fix the contradiction.
+      </div>
+
+      <div class="callout think">
+        <div class="callout-title">Two kinds of memory — don't mix them up</div>
+        <strong>On disk</strong> — <code>CLAUDE.md</code> files and Claude's notebook. Persist forever, across every session.<br>
+        <strong>In the session</strong> — the system prompt, your conversation so far, and (after <code>/compact</code>) a summarized version of earlier turns. All gone when the session ends.
+      </div>
+
+      <p style="margin-top:22px; font-size:13px; color:var(--text-dim);">Want the technical specifics? Expand any of these:</p>
+
+      <details>
+        <summary>Exact file paths on every OS</summary>
+        <p><strong>Admin policy file</strong> (enterprise only):</p>
+        <p>Linux/WSL: <code>/etc/claude-code/CLAUDE.md</code><br>
+        macOS: <code>/Library/Application Support/ClaudeCode/CLAUDE.md</code><br>
+        Windows: <code>C:\Program Files\ClaudeCode\CLAUDE.md</code></p>
+        <p><strong>Your preferences</strong>: <code>~/.claude/CLAUDE.md</code> (global, all projects)<br>
+        <strong>Your global rules folder</strong>: <code>~/.claude/rules/*.md</code></p>
+        <p><strong>Project rules</strong>: either <code>./CLAUDE.md</code> at the repo root, or <code>./.claude/CLAUDE.md</code> — both work.<br>
+        <strong>Project rules folder</strong>: <code>./.claude/rules/*.md</code><br>
+        <strong>Your private project notes</strong>: <code>./CLAUDE.local.md</code> (automatically gitignored)</p>
+        <p><strong>Subfolder rules</strong>: any <code>CLAUDE.md</code> inside a subdirectory of your project.<br>
+        <strong>Claude's notebook</strong>: <code>~/.claude/projects/&lt;your-repo&gt;/memory/</code> (machine-local — doesn't sync between machines).</p>
+      </details>
+
+      <details>
+        <summary>Importing one file from another (<code>@path</code>)</summary>
+        <p>Inside any <code>CLAUDE.md</code>, write <code>@path/to/other-file.md</code> to pull another file's content in. Useful for splitting a big CLAUDE.md into focused pieces.</p>
+        <p>Relative paths resolve relative to the <em>file doing the importing</em>, not your current directory. Absolute paths like <code>@~/.claude/shared.md</code> also work.</p>
+        <p>Imports expand inline when loaded. <strong>Maximum 5 hops of recursion</strong> — if A imports B which imports C... C can still import D and E, but stop there.</p>
+      </details>
+
+      <details>
+        <summary>The exact load order (for the curious)</summary>
+        <p>Concatenated at session launch in this order:</p>
+        <ol style="padding-left:24px;">
+          <li>Managed policy (if present)</li>
+          <li>Your <code>~/.claude/CLAUDE.md</code></li>
+          <li>Your <code>~/.claude/rules/*.md</code></li>
+          <li>Project <code>./CLAUDE.md</code>, walking up the directory tree from your current working directory</li>
+          <li>Project <code>./.claude/rules/*.md</code> (path-scoped rules load lazily when matching files are read)</li>
+          <li>Project <code>./CLAUDE.local.md</code></li>
+          <li>Auto-memory <code>MEMORY.md</code></li>
+        </ol>
+        <p><code>@path</code> imports expand inline where written. Subfolder <code>CLAUDE.md</code> files load lazily — only when Claude touches that folder.</p>
+      </details>
+
+      <details>
+        <summary>"Why isn't Claude following my rule?"</summary>
+        <p>Three common causes, in order of likelihood:</p>
+        <p><strong>1. You edited CLAUDE.md mid-session.</strong> Files load <em>once</em> at session start. Run <code>/clear</code> or start a new session to pick up changes. (Exception: <code>/compact</code> re-reads the project root <code>CLAUDE.md</code>.)</p>
+        <p><strong>2. Your CLAUDE.md is too long.</strong> Anthropic suggests under 200 lines. Bloat dilutes your actual rules into background noise.</p>
+        <p><strong>3. CLAUDE.md is NOT a system prompt.</strong> It's injected as a <em>user message</em> after the system prompt. This is why Claude can deprioritize it — especially if the rule is buried, contradicts another sheet, or is vaguely worded. Be specific. Be direct. Put must-follow rules at the top.</p>
+      </details>
+
+      <details>
+        <summary>CLAUDE.md vs. auto-memory (easy to confuse)</summary>
+        <p><strong>CLAUDE.md</strong> is <em>you</em> telling Claude what to do. You write it, you edit it, you commit it (or gitignore it).</p>
+        <p><strong>Auto-memory (<code>MEMORY.md</code>)</strong> is <em>Claude</em> remembering things from past sessions. Claude writes it. You can read and edit it with <code>/memory</code>, but normally you leave it alone.</p>
+        <p>Both load at session start. Both persist across sessions. Key difference: auto-memory is <strong>machine-local</strong> — if you work on two computers, the notebook doesn't sync. CLAUDE.md (committed to your repo) does.</p>
+      </details>
+
+      <a class="source" href="https://docs.claude.com/en/docs/claude-code/memory" target="_blank" style="margin-top:16px; display:inline-block;">↗ Official: Memory docs</a>
     </div>
   </div>
 
