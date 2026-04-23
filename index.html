@@ -847,11 +847,10 @@
             <div class="callout memory" style="margin-top: 18px">
               <div class="callout-title">Quick note on "project"</div>
               Your project is just <em>any folder on your computer</em> where
-              you do work — a folder on your Desktop, in Documents, a catch-all
-              like <code>C:\Claude\</code>, anywhere. Git repository or not.
-              Whenever you launch Claude Code from inside a folder, that folder
-              is "the project" and Claude looks for its rules there. No Git, no
-              GitHub, nothing special required.
+              you do work — a folder on your Desktop, in Documents, or anywhere
+              else. Git repository or not. Whenever you launch Claude Code from
+              inside a folder, that folder is "the project" and Claude looks
+              for its rules there. No Git, no GitHub, nothing special required.
             </div>
 
             <p style="margin-top: 22px">
@@ -977,10 +976,10 @@
                 <em>or</em> create a <code>.claude/</code> subfolder and put
                 <code>CLAUDE.md</code> inside it. Both work, Claude Code finds
                 either.<br />
-                <strong>Real example:</strong> if your project folder is
-                <code>C:\Claude\</code>, Claude Code will pick up
-                <code>C:\Claude\CLAUDE.md</code> or
-                <code>C:\Claude\.claude\CLAUDE.md</code>.<br />
+                <strong>For example:</strong> if your project folder is
+                <code>~/my-project/</code>, Claude Code looks for
+                <code>~/my-project/CLAUDE.md</code> or
+                <code>~/my-project/.claude/CLAUDE.md</code>. Either works.<br />
                 <strong>Project rules folder</strong>:
                 <code>.claude/rules/*.md</code> inside the project folder.<br />
                 <strong>Your private project notes</strong>:
@@ -1018,13 +1017,14 @@
                 <code>.claude/</code> subfolder.
               </p>
               <p>
-                <strong>Real example:</strong> plenty of people keep a catch-all
-                folder like <code>C:\Claude\</code> or
-                <code>~/claude-workspace</code> for Claude infrastructure work
-                and small one-off projects. Drop a <code>CLAUDE.md</code> in
-                there (or in <code>C:\Claude\.claude\CLAUDE.md</code>) and
-                Claude Code picks it up every time you work in that folder. No
-                Git, no GitHub, no setup.
+                <strong>Common pattern:</strong> a lot of people keep a
+                catch-all folder — something like <code>~/workspace/</code> on
+                Mac/Linux, or a folder under your user directory on Windows —
+                for experiments, scratch work, and one-off projects. Drop a
+                <code>CLAUDE.md</code> in there (or inside a
+                <code>.claude/</code> subfolder) and Claude Code picks it up
+                every time you work in that folder. No Git, no GitHub, no
+                setup.
               </p>
             </details>
 
