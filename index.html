@@ -972,14 +972,16 @@
               </p>
               <p>
                 <strong>Project rules</strong>: put
-                <code>CLAUDE.md</code> directly in your project folder,
-                <em>or</em> create a <code>.claude/</code> subfolder and put
-                <code>CLAUDE.md</code> inside it. Both work, Claude Code finds
-                either.<br />
+                <code>CLAUDE.md</code> directly in your project folder
+                (<code>./CLAUDE.md</code>), <em>or</em> inside a
+                <code>.claude/</code> subfolder (<code>./.claude/CLAUDE.md</code>).
+                Both locations are officially supported — pick one, don't create
+                both. Claude Code's <code>/init</code> command places it at the
+                project root by default.<br />
                 <strong>For example:</strong> if your project folder is
-                <code>~/my-project/</code>, Claude Code looks for
+                <code>~/my-project/</code>, your rules file would live at either
                 <code>~/my-project/CLAUDE.md</code> or
-                <code>~/my-project/.claude/CLAUDE.md</code>. Either works.<br />
+                <code>~/my-project/.claude/CLAUDE.md</code> — you choose.<br />
                 <strong>Project rules folder</strong>:
                 <code>.claude/rules/*.md</code> inside the project folder.<br />
                 <strong>Your private project notes</strong>:
